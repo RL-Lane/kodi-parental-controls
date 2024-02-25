@@ -27,7 +27,8 @@ I used [MySQL Workbench](https://www.mysql.com/products/workbench/) to make thes
 
 * Here you may see multiple schemas in the database.  For example, in mine, I had *myvideos119* and *myvideos121*.  This refers to database versions used by Kodi.  I have worked with version 121, **but I have not tested this technique with any other version**.  If you have a different version (and are not afraid of changing your database), then I recommend you copy an existing view and add the last parts of my code to each view within your personal copy of my sql code.  For reference, the relevant bits are as follows:
 
-      * movie_view  
+      * movie_view
+  
 ```CREATE or replace
     ALGORITHM = UNDEFINED 
     DEFINER = `kodi`@`%` 
