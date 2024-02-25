@@ -16,7 +16,7 @@ I used [MySQL Workbench](https://www.mysql.com/products/workbench/) to make thes
 
 * Open MySQL Workbench and connect to your database.  Your login will be the same as what you have already setup in your **advancedsettings.xml** file:
 * 
-    <advancedsettings>
+```    <advancedsettings>
       <videodatabase>
         <type>mysql</type>
         <host>hostname</host>
