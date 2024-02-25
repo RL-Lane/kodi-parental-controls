@@ -7,7 +7,7 @@ create user if not exists 'child'@'%' identified by 'login';
 
 
 -- The following section will need to be done via MySQL command line because of permissions.
--- grand select on *.* to 'child';
+-- grant select on *.* to 'child';
 -- GRANT SELECT ON *.* TO 'adult';
 flush privileges;
 
