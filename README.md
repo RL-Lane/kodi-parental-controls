@@ -73,7 +73,7 @@ VIEW `tvshow_view` AS
 
 * On your MySQL host, open the MySQL Command Line, using whatever login you have previously setup with Kodi's official guide.
 * For each user you wish to add, you will need to execute:
-```grant select on *.* to 'child';```
+```grant select, update on *.* to 'child';```
 * This will allow your new users to view Kodi without editing records.
 
 ## Step 4
