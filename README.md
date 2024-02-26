@@ -25,7 +25,7 @@ I used [MySQL Workbench](https://www.mysql.com/products/workbench/) to make thes
       </videodatabase> 
 ```
 
-* Here you may see multiple schemas in the database.  For example, in mine, I had *myvideos119* and *myvideos121*.  This refers to database versions used by Kodi.  I have worked with version 121, **but I have not tested this technique with any other version**.  If you have a different version (and are not afraid of changing your database), then I recommend you copy an existing view and add the last parts of my code to each view within your personal copy of my sql code.  For reference, the relevant bits are as follows:
+* Here you may see multiple schemas in the database.  For example, in mine, I had *myvideos119* and *myvideos121*.  This refers to database versions used by Kodi.  I have worked with version 121, **but I have not tested this technique with any other version**.  If you have a different version (and are not afraid of changing your database), then I recommend you copy an existing view and add the last parts of my code to each view within your personal copy of my sql code.  **I highly recommend that you create a backup of your database and/or views before modifying them with my code.  If you break something, I won't be able to help you fix it.**  For reference, the relevant bits are as follows:
 
       * movie_view
   
@@ -46,3 +46,47 @@ VIEW `movie_view` AS
     )
     ;
 ```
+	* tvshow_view
+
+ ```CREATE or replace
+    ALGORITHM = UNDEFINED 
+    DEFINER = `kodi`@`%` 
+    SQL SECURITY DEFINER
+VIEW `tvshow_view` AS
+...
+-- newly added permissions check
+		JOIN age_permissions ap ON `tvshow`.`c13` = ap.rated
+		JOIN user_age ua ON ua.user = SUBSTRING_INDEX(CURRENT_USER(), '@', 1)
+	WHERE 
+    (
+		ua.age >= ap.age
+        or
+        ua.age is null
+    )
+    ;
+```
+
+* Right-click the schema you wish to modify (in my case, **myvideos121**), and select **Set as default schema**.
+* Execute the SQL code in its entirety.  On Windows, that is Ctrl-Shift-Enter.  The button to press in the Workbench interface looks like a lightning bolt without a text cursor.
+
+## Step 3
+
+* On your MySQL host, open the MySQL Command Line, using whatever login you have previously setup with Kodi's official guide.
+* For each user you wish to add, you will need to execute:
+```grant select on *.* to 'child';```
+* This will allow your new users to view Kodi without editing records.
+
+## Step 4
+
+* Open and edit whatever **advancedsettings.xml** file is used to log into Kodi.  The new logins will be whatever use used earlier.  For example:
+```<advancedsettings>
+  <videodatabase>
+    <type>mysql</type>
+    <host>hostname</host>
+    <port>3306</port>
+    <user>adult</user>
+    <pass>login</pass>
+  </videodatabase>
+```
+* This will log into Kodi using the user credentials you have previously set up.  
+* One advantage of using this method is that by using a calculated age (by providing birthdate), you won't have to go back and change what they have access to in the future.  This might mean, though, that a theater would need separate logins in order to manage permissions.  That may be less than ideal, but this does seem to give some level of parental control which was  previously not available.
